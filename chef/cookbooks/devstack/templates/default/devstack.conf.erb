@@ -1,0 +1,10 @@
+[DEFAULT]
+# Show more verbose log output (sets INFO log level output)
+verbose = <%= node[:devstack][:verbose] %>
+
+# Show debugging output in logs (sets DEBUG log level output)
+debug = <%= node[:devstack][:debug] %>
+
+[app:devstack-api]
+paste.app_factory = devstack.server:app_factory
+

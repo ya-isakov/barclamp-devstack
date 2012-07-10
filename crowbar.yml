@@ -1,0 +1,96 @@
+# Copyright 2012, yaroslav Isakov
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Author: RobHirschfeld
+#
+# This file directs the installation of the barclamp by the Crowbar Framework
+# The major compoents are
+#    barclamp: detalis about the barclamp
+#    crowbar: installation instructions
+#    nav: (optional) injects items into the Crowbar UI menu
+#    debs/rpms/gems: components needs by the barclamp
+
+barclamp:
+  name: devstack
+  display: Devstack
+  description: A way to maximize awesomeness for Devstack
+  proposal_schema_version: 1
+  # controlls if barclamp is shown in UI list (true=yes)
+  user_managed: true
+  version: 0
+  # Requires allows you to declare that this barclamp relies on
+  # another barclamp to provide some of its functionality.
+  # All barclamps implicitly rely on the crowbar barclamp.
+  #requires:
+  #  - another-barclamp # rely on a single other barclamp
+  #  - @barclamp-group  # rely on another group of barclamps.
+  # Member allows you to declare that this barclamp is a member
+  # of a group of related barclamp.  A barclamp can be a member of 
+  # muliple groups, and a group name can be used instead of a barclamp
+  # in a requires: clause by prefixing it with an @ sign. 
+  member:
+    - openstack
+  # Os_support allows you to declare that this barclamp only supports
+  # specific operating systems.  If you don't have an os_support
+  # section, Crowbar will assume the barclamp works on all the operating
+  # systems it supports.  
+  os_support:
+    - ubuntu-11.10
+    - ubuntu-12.04
+
+crowbar:
+  layout: 1
+  order: 1000
+  run_order: 1000
+  chef_order: 1000
+  proposal_schema_version: 2
+
+nav:
+  barclamps:
+    devstack: barclamp_modules_path(:id=>'devstack')
+
+# debs, gems, rpms and extra_files allow you declare the OS packages,
+# gems, and raw files that this barclamp needs.
+
+# debs allows you to declare extra repositories to pull packages from
+# and delare that packages that you need for systems that use Debian-style
+# packaging.  
+debs:
+  # pkgs is a list of extra packages that the build system will try to pull
+  # and cache on the crowbar iso image.  You only have to list top-level 
+  # packages here -- if apt-get install gets all the dependencies, you do not
+  # need to list them here.
+  pkgs:
+    # put your packages here
+    - git
+
+# extra_files downloads and saves a file to be slipstreamed on to the 
+# crowbar .iso in the extra/files directory (or a subdirectory thereof).
+# The build system will try to extract the .rpm files from 
+# anything that looks like an Oracle java rpm.bin and treat the extracted
+# .rpm files as if they were provided by raw_pkgs. 
+extra_files:
+  # will place file into extra/files
+  #- https://github.com/openstack-dev/devstack/tarball/stable/essex.tar.gz tempest
+
+locale_additions:
+  en:
+    nav:
+      devstack: Devstack
+    barclamp:
+      devstack_edit_attributes: 
+        attributes: Attributes
+        foo: Comic Choice
+      devstack_edit_deployment: 
+        deployment: Deployment
